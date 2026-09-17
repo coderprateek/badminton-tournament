@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}GOALS Badminton League 2026{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="kicker">Team badminton tournament</p>
+  <h1>Groups, round-robin, and match scores in one place.</h1>
+  <p>Players can follow every group. Admins sign in with a code to add teams, lineups, and set scores. Data is saved to text files so it survives a server restart.</p>
+  <p class="hint">Match winners get 2 points. Rankings: Points > Game Differential > Set Differential.</p>
+</section>
+
+{% if is_admin %}
+  <div class="grid two">
+    <form class="card" method="post" action="{{ url_for('add_group') }}">
+      <h2>Add a group</h2>
+      <label>Group name
+        <input name="name" placeholder="Group A" required>
+      </label>
+      <button type="submit">Create group</button>
+    </form>
+    <form class="card" method="post" action="{{ url_for('add_team') }}">
+      <h2>Add a team</h2>
+      <p class="hint">Create the team first, then place it in a group.</p>
+      <label>Team name
+        <input name="name" placeholder="Court Kings" required>
+      </label>
+      <button type="submit">Create team</button>
+    </form>
+  </div>
+{% endif %}
+
+{% if unassigned %}
+  <section class="card">
+    <h2>Unassigned teams</h2>
+    <ul class="plain">
+      {% for team in unassigned %}
+        <li>{{ team.name }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
+
+<section class="group-grid">
+  {% for card in cards %}
+    <a class="card group-card" href="{{ url_for('group_detail', group_id=card.group.id) }}">
+      <h2>{{ card.group.name }}</h2>
+      <p>{{ card.teams|length }} team{{ 's' if card.teams|length != 1 else '' }} · {{ card.match_count }} match{{ 'es' if card.match_count != 1 else '' }}</p>
+      {% if card.standings %}
+        <table class="mini">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Pts</th>
+              <th>Games</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in card.standings[:3] %}
+              <tr>
+                <td>{{ row.team.name }}</td>
+                <td>{{ row.points }}</td>
+                <td>{{ row.games_for }}–{{ row.games_against }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="hint">No standings yet.</p>
+      {% endif %}
+    </a>
+  {% else %}
+    <p class="hint">No groups yet.{% if is_admin %} Add one above.{% else %} Ask an admin to set up the draw.{% endif %}</p>
+  {% endfor %}
+</section>
+{% endblock %}

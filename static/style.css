@@ -1,0 +1,103 @@
+:root {
+  --ink: #102318;
+  --muted: #4d6154;
+  --line: #d5e4d6;
+  --paper: #f6faf4;
+  --card: #ffffff;
+  --accent: #1f7a45;
+  --accent-dark: #145c32;
+  --gold: #c9a227;
+  --err: #9b1c1c;
+  --ok: #145c32;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top right, rgba(201, 162, 39, 0.18), transparent 28%),
+    linear-gradient(180deg, #eef6ec 0%, var(--paper) 40%);
+  min-height: 100vh;
+}
+a { color: var(--accent-dark); }
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--ink);
+  color: white;
+}
+.topbar a, .topbar button { color: white; text-decoration: none; }
+.brand { font-weight: 700; letter-spacing: 0.04em; }
+.topbar nav { display: flex; gap: 1rem; align-items: center; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+.hero h1 { font-size: 2rem; margin: 0.3rem 0 0.6rem; }
+.kicker { text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); font-size: 0.8rem; font-weight: 700; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.1rem 1.2rem;
+  margin: 1rem 0;
+  box-shadow: 0 8px 24px rgba(16, 35, 24, 0.05);
+}
+.group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.group-card { display: block; text-decoration: none; color: inherit; }
+.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.narrow { max-width: 420px; }
+label, legend { display: block; font-size: 0.9rem; margin: 0.5rem 0; }
+input, select {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+}
+button {
+  background: var(--accent);
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { background: var(--accent-dark); }
+.row { display: flex; gap: 0.7rem; align-items: end; flex-wrap: wrap; }
+.row input, .row select { width: auto; min-width: 140px; }
+.row-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.hint { color: var(--muted); }
+.plain, .match-list, .sets { padding-left: 1.1rem; }
+.match-list a { display: flex; justify-content: space-between; gap: 1rem; text-decoration: none; color: inherit; padding: 0.35rem 0; }
+.status { text-transform: capitalize; color: var(--muted); font-size: 0.85rem; }
+.pill { background: var(--gold); color: var(--ink); border-radius: 999px; padding: 0.15rem 0.6rem; font-size: 0.8rem; font-weight: 700; }
+.pill.muted { background: #3d5244; color: #dce8dd; }
+.flash { padding: 0.7rem 0.9rem; border-radius: 10px; }
+.flash.ok { background: #e4f4e8; color: var(--ok); }
+.flash.error { background: #fde8e8; color: var(--err); }
+.inline { display: inline; }
+.linkish { background: none; padding: 0; color: white; border-radius: 0; }
+.crumb { color: var(--muted); }
+.scoreline { font-size: 1.4rem; font-weight: 700; }
+.team-block { border-top: 1px solid var(--line); padding-top: 0.8rem; }
+.check { display: flex; gap: 0.45rem; align-items: center; }
+.check input { width: auto; margin: 0; }
+fieldset { border: 1px dashed var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; }
+table th, table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--line); }
+table th { font-weight: 600; color: var(--muted); font-size: 0.85rem; }
+table.mini { font-size: 0.85rem; }
+table.mini th, table.mini td { padding: 0.3rem 0.4rem; }
+.remove-row { background: var(--err); padding: 0.3rem 0.6rem; font-size: 0.8rem; }
+.remove-row:hover { background: #7a1616; }
+.bulk-player-row { margin-bottom: 0.5rem; }
+details { margin: 0.5rem 0; }
+details summary { cursor: pointer; color: var(--accent-dark); font-weight: 600; }
+details[open] summary { margin-bottom: 0.5rem; }
+@media (max-width: 700px) {
+  .grid.two, .row-head { grid-template-columns: 1fr; display: block; }
+}

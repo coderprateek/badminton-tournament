@@ -1,0 +1,32 @@
+[
+  {
+    "id": "team_71af4560",
+    "name": "ROFL",
+    "group_id": "grp_c8a31ea9"
+  },
+  {
+    "id": "team_5e50e44d",
+    "name": "Smash Guys",
+    "group_id": "grp_c8a31ea9"
+  },
+  {
+    "id": "team_b560851a",
+    "name": "Goldman Smashers",
+    "group_id": "grp_c8a31ea9"
+  },
+  {
+    "id": "team_29079516",
+    "name": "Hirendeer",
+    "group_id": "grp_c8a31ea9"
+  },
+  {
+    "id": "team_5c34e7f2",
+    "name": "MASs Destruction",
+    "group_id": "grp_c8a31ea9"
+  },
+  {
+    "id": "team_1951ccbc",
+    "name": "Mass Recruiter",
+    "group_id": "grp_c8a31ea9"
+  }
+]

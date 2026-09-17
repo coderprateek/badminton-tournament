@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+{% block title %}{{ group.name }}{% endblock %}
+{% block content %}
+<script>
+function addPlayerRow(containerId) {
+  const container = document.getElementById(containerId);
+  const newRow = document.createElement('div');
+  newRow.className = 'row bulk-player-row';
+  newRow.innerHTML = `
+    <input name="player_names" placeholder="Player name" required>
+    <select name="player_genders" required>
+      <option value="">Gender</option>
+      <option value="M">Male</option>
+      <option value="F">Female</option>
+    </select>
+    <button type="button" class="remove-row" onclick="this.parentElement.remove()">Remove</button>
+  `;
+  container.appendChild(newRow);
+}
+</script>
+<p class="crumb"><a href="{{ url_for('home') }}">Groups</a> / {{ group.name }}</p>
+<h1>{{ group.name }}</h1>
+
+<section class="card">
+  <h2>Standings</h2>
+  {% if standings %}
+    <table>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>P</th>
+          <th>W</th>
+          <th>L</th>
+          <th>D</th>
+          <th>Pts</th>
+          <th>Games</th>
+          <th>Sets</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in standings %}
+          <tr>
+            <td>{{ row.team.name }}</td>
+            <td>{{ row.played }}</td>
+            <td>{{ row.wins }}</td>
+            <td>{{ row.losses }}</td>
+            <td>{{ row.draws }}</td>
+            <td>{{ row.points }}</td>
+            <td>{{ row.games_for }}–{{ row.games_against }}</td>
+            <td>{{ row.sets_for }}–{{ row.sets_against }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="hint">Add teams to this group to start the table.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Player Standings</h2>
+  <div class="grid two">
+    <div>
+      <h3>Male Players</h3>
+      {% if player_standings.male %}
+        <table class="mini">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Team</th>
+              <th>P</th>
+              <th>W</th>
+              <th>L</th>
+              <th>Sets</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stat in player_standings.male %}
+              <tr>
+                <td>{{ stat.player.name }}</td>
+                <td>{{ stat.team.name }}</td>
+                <td>{{ stat.played }}</td>
+                <td>{{ stat.wins }}</td>
+                <td>{{ stat.losses }}</td>
+                <td>{{ stat.sets_for }}–{{ stat.sets_against }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="hint">No male players yet.</p>
+      {% endif %}
+    </div>
+    <div>
+      <h3>Female Players</h3>
+      {% if player_standings.female %}
+        <table class="mini">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Team</th>
+              <th>P</th>
+              <th>W</th>
+              <th>L</th>
+              <th>Sets</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stat in player_standings.female %}
+              <tr>
+                <td>{{ stat.player.name }}</td>
+                <td>{{ stat.team.name }}</td>
+                <td>{{ stat.played }}</td>
+                <td>{{ stat.wins }}</td>
+                <td>{{ stat.losses }}</td>
+                <td>{{ stat.sets_for }}–{{ stat.sets_against }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="hint">No female players yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% if is_admin %}
+<section class="card">
+  <h2>Game Configuration</h2>
+  <p class="hint">Configure how many games of each type will be played in each match of this group.</p>
+  <form method="post" action="{{ url_for('update_group_config', group_id=group.id) }}">
+    <div class="grid" style="grid-template-columns: repeat(5, 1fr);">
+      {% for code, spec in categories.items() %}
+        <label>
+          {{ spec.label }}
+          <input type="number" name="games_{{ code }}" min="0" value="{{ group.game_config.get(code, 1) }}" required>
+        </label>
+      {% endfor %}
+    </div>
+    <button type="submit">Update configuration</button>
+  </form>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Teams</h2>
+  {% for team in teams %}
+    <article class="team-block">
+      <h3>{{ team.name }}</h3>
+      {% set roster = players_by_team[team.id] %}
+      {% if roster %}
+        <ul class="plain">
+          {% for player in roster %}
+            <li>{{ player.name }} · {{ gender_labels[player.gender] }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="hint">No players yet.</p>
+      {% endif %}
+      {% if is_admin %}
+        <details>
+          <summary>Add single player</summary>
+          <form class="row" method="post" action="{{ url_for('add_player', team_id=team.id) }}">
+            <input name="name" placeholder="Player name" required>
+            <select name="gender" required>
+              <option value="">Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+            <button type="submit">Add player</button>
+          </form>
+        </details>
+        <details>
+          <summary>Add multiple players</summary>
+          <form method="post" action="{{ url_for('add_players_bulk', team_id=team.id) }}">
+            <div id="bulk-players-{{ team.id }}">
+              <div class="row bulk-player-row">
+                <input name="player_names" placeholder="Player name" required>
+                <select name="player_genders" required>
+                  <option value="">Gender</option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                </select>
+                <button type="button" class="remove-row" onclick="this.parentElement.remove()">Remove</button>
+              </div>
+            </div>
+            <button type="button" onclick="addPlayerRow('bulk-players-{{ team.id }}')">Add another player</button>
+            <button type="submit">Save all players</button>
+          </form>
+        </details>
+      {% endif %}
+    </article>
+  {% else %}
+    <p class="hint">No teams in this group yet.</p>
+  {% endfor %}
+
+  {% if is_admin %}
+    <form method="post" action="{{ url_for('add_team_to_group', group_id=group.id) }}">
+      <h3>Add a new team to this group</h3>
+      <label>Team name
+        <input name="name" placeholder="Net Ninjas">
+      </label>
+      <button type="submit">Add team</button>
+    </form>
+    {% if unassigned %}
+      <form method="post" action="{{ url_for('add_team_to_group', group_id=group.id) }}">
+        <h3>Move an existing team into this group</h3>
+        <label>Unassigned team
+          <select name="existing_team_id" required>
+            <option value="">Choose a team</option>
+            {% for team in unassigned %}
+              <option value="{{ team.id }}">{{ team.name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <button type="submit">Place in group</button>
+      </form>
+    {% endif %}
+  {% endif %}
+</section>
+
+<section class="card">
+  <div class="row-head">
+    <h2>Round-robin matches</h2>
+    {% if is_admin %}
+      <form method="post" action="{{ url_for('generate_round_robin', group_id=group.id) }}">
+        <button type="submit">Generate missing matches</button>
+      </form>
+    {% endif %}
+  </div>
+  {% if regular_matches %}
+    {% if is_admin %}
+      <form method="post" action="{{ url_for('reorder_matches', group_id=group.id) }}">
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Match</th>
+              <th>Score</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for match in regular_matches %}
+              <tr>
+                <td>
+                  <input type="number" name="match_order_{{ match.id }}" value="{{ match.get('order', loop.index) }}" min="1" style="width: 60px;">
+                </td>
+                <td>
+                  <a href="{{ url_for('match_detail', match_id=match.id) }}">
+                    <strong>{{ match.team_a.name }}</strong> vs <strong>{{ match.team_b.name }}</strong>
+                  </a>
+                </td>
+                <td>{{ match.games_a }}–{{ match.games_b }}</td>
+                <td><span class="status">{{ match.status.replace('_', ' ') }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <button type="submit">Update order</button>
+      </form>
+    {% else %}
+      <ul class="match-list">
+        {% for match in regular_matches %}
+          <li>
+            <a href="{{ url_for('match_detail', match_id=match.id) }}">
+              <strong>{{ match.team_a.name }}</strong> {{ match.games_a }}–{{ match.games_b }} <strong>{{ match.team_b.name }}</strong>
+              <span class="status">{{ match.status.replace('_', ' ') }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% else %}
+    <p class="hint">No matches yet.{% if is_admin %} Generate a round-robin once the group has two or more teams.{% endif %}</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <div class="row-head">
+    <h2>Final Match</h2>
+    {% if is_admin %}
+      <form method="post" action="{{ url_for('generate_final', group_id=group.id) }}">
+        <button type="submit">Generate Final</button>
+      </form>
+    {% endif %}
+  </div>
+  {% if final_match %}
+    <ul class="match-list">
+      <li>
+        <a href="{{ url_for('match_detail', match_id=final_match.id) }}">
+          <strong>🏆 FINAL: {{ final_match.team_a.name }}</strong> {{ final_match.games_a }}–{{ final_match.games_b }} <strong>{{ final_match.team_b.name }}</strong>
+          <span class="status">{{ final_match.status.replace('_', ' ') }}</span>
+        </a>
+      </li>
+    </ul>
+  {% else %}
+    <p class="hint">No final match yet.{% if is_admin %} Generate a final once round-robin matches are completed.{% endif %}</p>
+  {% endif %}
+</section>
+{% endblock %}

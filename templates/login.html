@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Admin login{% endblock %}
+{% block content %}
+<form class="card narrow" method="post">
+  <h1>Admin login</h1>
+  <p class="hint">Only people with the organizer code can add groups, teams, players, and scores. Everyone else can still view the tournament.</p>
+  <label>Admin code
+    <input type="password" name="code" autocomplete="current-password" required>
+  </label>
+  <button type="submit">Sign in</button>
+</form>
+{% endblock %}

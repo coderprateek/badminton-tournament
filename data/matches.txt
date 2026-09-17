@@ -1,0 +1,137 @@
+[
+  {
+    "id": "mt_bd12675d",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_71af4560",
+    "team_b_id": "team_5e50e44d",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 14
+  },
+  {
+    "id": "mt_ffc3f2bd",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_71af4560",
+    "team_b_id": "team_b560851a",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 1
+  },
+  {
+    "id": "mt_2628c7b2",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_71af4560",
+    "team_b_id": "team_29079516",
+    "status": "finished",
+    "is_final": false,
+    "order": 8
+  },
+  {
+    "id": "mt_1465f5ff",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_71af4560",
+    "team_b_id": "team_5c34e7f2",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 11
+  },
+  {
+    "id": "mt_c79410ca",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_71af4560",
+    "team_b_id": "team_1951ccbc",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 5
+  },
+  {
+    "id": "mt_609bb071",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_5e50e44d",
+    "team_b_id": "team_b560851a",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 7
+  },
+  {
+    "id": "mt_de29e720",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_5e50e44d",
+    "team_b_id": "team_29079516",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 2
+  },
+  {
+    "id": "mt_72c12570",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_5e50e44d",
+    "team_b_id": "team_5c34e7f2",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 6
+  },
+  {
+    "id": "mt_4f98704a",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_5e50e44d",
+    "team_b_id": "team_1951ccbc",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 12
+  },
+  {
+    "id": "mt_c7d5a103",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_b560851a",
+    "team_b_id": "team_29079516",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 3
+  },
+  {
+    "id": "mt_85a88342",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_b560851a",
+    "team_b_id": "team_5c34e7f2",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 13
+  },
+  {
+    "id": "mt_acb463c2",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_b560851a",
+    "team_b_id": "team_1951ccbc",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 9
+  },
+  {
+    "id": "mt_13f175d2",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_29079516",
+    "team_b_id": "team_5c34e7f2",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 10
+  },
+  {
+    "id": "mt_0d19ff40",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_29079516",
+    "team_b_id": "team_1951ccbc",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 15
+  },
+  {
+    "id": "mt_e2fc2396",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_5c34e7f2",
+    "team_b_id": "team_1951ccbc",
+    "status": "scheduled",
+    "is_final": false,
+    "order": 4
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "grp_c8a31ea9",
+    "name": "GOALS Group",
+    "game_config": {
+      "MS": 2,
+      "WS": 0,
+      "MD": 4,
+      "WD": 1,
+      "XD": 2
+    }
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "pl_65378e53",
+    "team_id": "team_71af4560",
+    "name": "Ashita",
+    "gender": "F"
+  },
+  {
+    "id": "pl_fd791158",
+    "team_id": "team_71af4560",
+    "name": "Ayush",
+    "gender": "M"
+  },
+  {
+    "id": "pl_a8b7a6a4",
+    "team_id": "team_71af4560",
+    "name": "Apoorv",
+    "gender": "M"
+  },
+  {
+    "id": "pl_a63c6b8d",
+    "team_id": "team_71af4560",
+    "name": "Prateek",
+    "gender": "M"
+  },
+  {
+    "id": "pl_66f7659c",
+    "team_id": "team_71af4560",
+    "name": "Warun",
+    "gender": "M"
+  },
+  {
+    "id": "pl_f88fdc0a",
+    "team_id": "team_71af4560",
+    "name": "Sayanti",
+    "gender": "F"
+  },
+  {
+    "id": "pl_10c6142d",
+    "team_id": "team_71af4560",
+    "name": "Sanidhi",
+    "gender": "F"
+  },
+  {
+    "id": "pl_606c4ab1",
+    "team_id": "team_71af4560",
+    "name": "Anubhav",
+    "gender": "M"
+  },
+  {
+    "id": "pl_e7fccab5",
+    "team_id": "team_71af4560",
+    "name": "Vaibhav",
+    "gender": "M"
+  },
+  {
+    "id": "pl_b0459857",
+    "team_id": "team_71af4560",
+    "name": "Vaishanavi",
+    "gender": "F"
+  },
+  {
+    "id": "pl_17a736e1",
+    "team_id": "team_29079516",
+    "name": "Yash",
+    "gender": "M"
+  },
+  {
+    "id": "pl_2c606b01",
+    "team_id": "team_29079516",
+    "name": "Hiren",
+    "gender": "M"
+  },
+  {
+    "id": "pl_b3e94328",
+    "team_id": "team_29079516",
+    "name": "Dyuti",
+    "gender": "F"
+  },
+  {
+    "id": "pl_d557969b",
+    "team_id": "team_29079516",
+    "name": "Prakhar",
+    "gender": "M"
+  },
+  {
+    "id": "pl_3e2e9658",
+    "team_id": "team_29079516",
+    "name": "Anshuman",
+    "gender": "M"
+  },
+  {
+    "id": "pl_aac37022",
+    "team_id": "team_29079516",
+    "name": "Sanskrit",
+    "gender": "F"
+  },
+  {
+    "id": "pl_5e4a7426",
+    "team_id": "team_29079516",
+    "name": "Ankit",
+    "gender": "M"
+  },
+  {
+    "id": "pl_072d81c1",
+    "team_id": "team_29079516",
+    "name": "Aakash",
+    "gender": "M"
+  }
+]
