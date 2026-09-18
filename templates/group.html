@@ -63,30 +63,32 @@ function addPlayerRow(containerId) {
     <div>
       <h3>Male Players</h3>
       {% if player_standings.male %}
-        <table class="mini">
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>Team</th>
-              <th>P</th>
-              <th>W</th>
-              <th>L</th>
-              <th>Sets</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for stat in player_standings.male %}
+        <div class="scrollable-table">
+          <table class="mini">
+            <thead>
               <tr>
-                <td>{{ stat.player.name }}</td>
-                <td>{{ stat.team.name }}</td>
-                <td>{{ stat.played }}</td>
-                <td>{{ stat.wins }}</td>
-                <td>{{ stat.losses }}</td>
-                <td>{{ stat.sets_for }}–{{ stat.sets_against }}</td>
+                <th>Player</th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>L</th>
+                <th>Sets</th>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {% for stat in player_standings.male %}
+                <tr>
+                  <td>{{ stat.player.name }}</td>
+                  <td>{{ stat.team.name }}</td>
+                  <td>{{ stat.played }}</td>
+                  <td>{{ stat.wins }}</td>
+                  <td>{{ stat.losses }}</td>
+                  <td>{{ stat.sets_for }}–{{ stat.sets_against }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% else %}
         <p class="hint">No male players yet.</p>
       {% endif %}
@@ -94,30 +96,32 @@ function addPlayerRow(containerId) {
     <div>
       <h3>Female Players</h3>
       {% if player_standings.female %}
-        <table class="mini">
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>Team</th>
-              <th>P</th>
-              <th>W</th>
-              <th>L</th>
-              <th>Sets</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for stat in player_standings.female %}
+        <div class="scrollable-table">
+          <table class="mini">
+            <thead>
               <tr>
-                <td>{{ stat.player.name }}</td>
-                <td>{{ stat.team.name }}</td>
-                <td>{{ stat.played }}</td>
-                <td>{{ stat.wins }}</td>
-                <td>{{ stat.losses }}</td>
-                <td>{{ stat.sets_for }}–{{ stat.sets_against }}</td>
+                <th>Player</th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>L</th>
+                <th>Sets</th>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {% for stat in player_standings.female %}
+                <tr>
+                  <td>{{ stat.player.name }}</td>
+                  <td>{{ stat.team.name }}</td>
+                  <td>{{ stat.played }}</td>
+                  <td>{{ stat.wins }}</td>
+                  <td>{{ stat.losses }}</td>
+                  <td>{{ stat.sets_for }}–{{ stat.sets_against }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% else %}
         <p class="hint">No female players yet.</p>
       {% endif %}
@@ -261,16 +265,18 @@ function addPlayerRow(containerId) {
         <button type="submit">Update order</button>
       </form>
     {% else %}
-      <ul class="match-list">
-        {% for match in regular_matches %}
-          <li>
-            <a href="{{ url_for('match_detail', match_id=match.id) }}">
-              <strong>{{ match.team_a.name }}</strong> {{ match.games_a }}–{{ match.games_b }} <strong>{{ match.team_b.name }}</strong>
-              <span class="status">{{ match.status.replace('_', ' ') }}</span>
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+      <table class="match-table">
+        <tbody>
+          {% for match in regular_matches %}
+            <tr>
+              <td><a href="{{ url_for('match_detail', match_id=match.id) }}"><strong>{{ match.team_a.name }}</strong></a></td>
+              <td class="score-cell"><a href="{{ url_for('match_detail', match_id=match.id) }}">{{ match.games_a }}–{{ match.games_b }}</a></td>
+              <td><a href="{{ url_for('match_detail', match_id=match.id) }}"><strong>{{ match.team_b.name }}</strong></a></td>
+              <td class="status-cell"><span class="status">{{ match.status.replace('_', ' ') }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% endif %}
   {% else %}
     <p class="hint">No matches yet.{% if is_admin %} Generate a round-robin once the group has two or more teams.{% endif %}</p>

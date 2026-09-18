@@ -174,8 +174,8 @@
     ],
     "sets": [
       {
-        "a": 15,
-        "b": 0
+        "a": 21,
+        "b": 15
       }
     ]
   },
@@ -212,8 +212,8 @@
     ],
     "sets": [
       {
-        "a": 12,
-        "b": 0
+        "a": 21,
+        "b": 18
       }
     ]
   },
@@ -1273,6 +1273,87 @@
   {
     "id": "gm_9887e184",
     "match_id": "mt_e2fc2396",
+    "category": "XD",
+    "order": 9,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_f2d98d32",
+    "match_id": "mt_3843bc20",
+    "category": "MS",
+    "order": 1,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_464fbd73",
+    "match_id": "mt_3843bc20",
+    "category": "MS",
+    "order": 2,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_097e99da",
+    "match_id": "mt_3843bc20",
+    "category": "MD",
+    "order": 3,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_28e34763",
+    "match_id": "mt_3843bc20",
+    "category": "MD",
+    "order": 4,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_4e2b22c1",
+    "match_id": "mt_3843bc20",
+    "category": "MD",
+    "order": 5,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_35c31dc1",
+    "match_id": "mt_3843bc20",
+    "category": "MD",
+    "order": 6,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_547dd684",
+    "match_id": "mt_3843bc20",
+    "category": "WD",
+    "order": 7,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_5aae8870",
+    "match_id": "mt_3843bc20",
+    "category": "XD",
+    "order": 8,
+    "team_a_player_ids": [],
+    "team_b_player_ids": [],
+    "sets": []
+  },
+  {
+    "id": "gm_e244c216",
+    "match_id": "mt_3843bc20",
     "category": "XD",
     "order": 9,
     "team_a_player_ids": [],

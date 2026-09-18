@@ -133,5 +133,14 @@
     "status": "scheduled",
     "is_final": false,
     "order": 4
+  },
+  {
+    "id": "mt_3843bc20",
+    "group_id": "grp_c8a31ea9",
+    "team_a_id": "team_71af4560",
+    "team_b_id": "team_b560851a",
+    "status": "scheduled",
+    "is_final": true,
+    "order": 999
   }
 ]

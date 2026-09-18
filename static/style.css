@@ -98,6 +98,14 @@ table.mini th, table.mini td { padding: 0.3rem 0.4rem; }
 details { margin: 0.5rem 0; }
 details summary { cursor: pointer; color: var(--accent-dark); font-weight: 600; }
 details[open] summary { margin-bottom: 0.5rem; }
+.scrollable-table { max-height: 400px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; }
+.scrollable-table table { margin: 0; border: none; }
+.scrollable-table thead { position: sticky; top: 0; background: var(--card); z-index: 1; }
+.match-table { width: 100%; border-collapse: collapse; }
+.match-table td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--line); }
+.match-table td a { text-decoration: none; color: inherit; }
+.match-table .score-cell { text-align: center; font-weight: 700; min-width: 60px; }
+.match-table .status-cell { text-align: right; width: 100px; }
 @media (max-width: 700px) {
   .grid.two, .row-head { grid-template-columns: 1fr; display: block; }
 }

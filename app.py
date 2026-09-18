@@ -468,7 +468,7 @@ def add_set(game_id: str):
     if not game:
         abort(404)
     if game.get("sets"):
-        flash("This game already has a set score. Only one set per game is allowed.", "error")
+        flash("This game already has a set score. Use the edit option to modify it.", "error")
         return redirect(url_for("match_detail", match_id=game["match_id"]))
     try:
         score_a = int(request.form.get("score_a", ""))
@@ -493,6 +493,35 @@ def add_set(game_id: str):
     return redirect(url_for("match_detail", match_id=game["match_id"]))
 
 
+@app.post("/games/<game_id>/edit")
+@admin_required
+def edit_set(game_id: str):
+    data = storage.snapshot()
+    game = storage.find(data["games"], game_id)
+    if not game:
+        abort(404)
+    if not game.get("sets"):
+        flash("This game has no set score to edit.", "error")
+        return redirect(url_for("match_detail", match_id=game["match_id"]))
+    try:
+        score_a = int(request.form.get("score_a", ""))
+        score_b = int(request.form.get("score_b", ""))
+    except ValueError:
+        flash("Both set scores must be whole numbers.", "error")
+        return redirect(url_for("match_detail", match_id=game["match_id"]))
+    if score_a < 0 or score_b < 0:
+        flash("Scores cannot be negative.", "error")
+        return redirect(url_for("match_detail", match_id=game["match_id"]))
+    if score_a == score_b:
+        flash("A set cannot be a draw — one side must score more points.", "error")
+        return redirect(url_for("match_detail", match_id=game["match_id"]))
+    game["sets"] = [{"a": score_a, "b": score_b}]
+    storage.replace_row(data["games"], game)
+    storage.save_all(data)
+    flash(f"Set score updated: {score_a}–{score_b}.", "ok")
+    return redirect(url_for("match_detail", match_id=game["match_id"]))
+
+
 @app.post("/matches/<match_id>/finish")
 @admin_required
 def finish_match(match_id: str):
@@ -508,6 +537,20 @@ def finish_match(match_id: str):
     storage.replace_row(data["matches"], match)
     storage.save_all(data)
     flash("Match marked as finished.", "ok")
+    return redirect(url_for("match_detail", match_id=match_id))
+
+
+@app.post("/matches/<match_id>/reopen")
+@admin_required
+def reopen_match(match_id: str):
+    data = storage.snapshot()
+    match = storage.find(data["matches"], match_id)
+    if not match:
+        abort(404)
+    match["status"] = "in_progress"
+    storage.replace_row(data["matches"], match)
+    storage.save_all(data)
+    flash("Match reopened for editing.", "ok")
     return redirect(url_for("match_detail", match_id=match_id))
 
 
@@ -564,4 +607,4 @@ def _match_view(match: dict, data: dict) -> dict:
 
 if __name__ == "__main__":
     storage.snapshot()
-    app.run(debug=True, port=5050)
+    app.run(debug=False, port=5050)
