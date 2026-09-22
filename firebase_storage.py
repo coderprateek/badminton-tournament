@@ -33,16 +33,37 @@ def initialize_firebase():
     try:
         if not firebase_admin._apps:
             # Try to use service account credentials
-            service_account_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", 
-                                              os.path.join(os.path.dirname(__file__), "firebase-service-account.json"))
-            if os.path.exists(service_account_path):
-                cred = credentials.Certificate(service_account_path)
-                firebase_admin.initialize_app(cred, options=FIREBASE_CONFIG)
-                print("Firebase initialized with service account credentials")
+            credentials_env = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+            
+            if credentials_env:
+                # Check if it's a file path or JSON content
+                if os.path.exists(credentials_env):
+                    # It's a file path (local development)
+                    cred = credentials.Certificate(credentials_env)
+                    firebase_admin.initialize_app(cred, options=FIREBASE_CONFIG)
+                    print("Firebase initialized with service account file")
+                else:
+                    # It's JSON content (Render deployment)
+                    try:
+                        cred_dict = json.loads(credentials_env)
+                        cred = credentials.Certificate(cred_dict)
+                        firebase_admin.initialize_app(cred, options=FIREBASE_CONFIG)
+                        print("Firebase initialized with service account from environment variable")
+                    except json.JSONDecodeError:
+                        # Fallback to config only (requires test mode)
+                        firebase_admin.initialize_app(options=FIREBASE_CONFIG)
+                        print("Firebase initialized with config (test mode)")
             else:
-                # Fallback to config only (requires test mode)
-                firebase_admin.initialize_app(options=FIREBASE_CONFIG)
-                print("Firebase initialized with config (test mode)")
+                # No credentials provided, try local file
+                local_file = os.path.join(os.path.dirname(__file__), "firebase-service-account.json")
+                if os.path.exists(local_file):
+                    cred = credentials.Certificate(local_file)
+                    firebase_admin.initialize_app(cred, options=FIREBASE_CONFIG)
+                    print("Firebase initialized with local service account file")
+                else:
+                    # Fallback to config only (requires test mode)
+                    firebase_admin.initialize_app(options=FIREBASE_CONFIG)
+                    print("Firebase initialized with config (test mode)")
         return True
     except Exception as e:
         print(f"Firebase initialization error: {e}")
