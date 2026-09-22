@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: goals-badminton-league
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: FLASK_ENV
+        value: production
+      - key: USE_FIREBASE
+        value: true
+      - key: PORT
+        value: 10000

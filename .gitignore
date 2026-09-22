@@ -1,6 +1,10 @@
-.venv/
-vendor/
-__pycache__/
+firebase-service-account.json
+*-firebase-adminsdk-*.json
 *.pyc
-.DS_Store
+__pycache__/
+.venv/
+venv/
+data/
 .env
+vendor/
+wrangler.toml

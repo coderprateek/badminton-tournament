@@ -1,10 +1,17 @@
 from __future__ import annotations
 
 from functools import wraps
+import os
 
 from flask import Flask, abort, flash, redirect, render_template, request, session, url_for
 
-import storage
+# Choose storage backend based on environment
+USE_FIREBASE = os.environ.get("USE_FIREBASE", "false").lower() == "true"
+
+if USE_FIREBASE:
+    import firebase_storage as storage
+else:
+    import storage
 
 app = Flask(__name__)
 app.secret_key = "badminton-tournament-dev-key"
@@ -607,4 +614,11 @@ def _match_view(match: dict, data: dict) -> dict:
 
 if __name__ == "__main__":
     storage.snapshot()
-    app.run(debug=False, port=5050)
+    port = int(os.environ.get("PORT", 5050))
+    # Production deployment (Render, etc.)
+    if os.environ.get("FLASK_ENV") == "production":
+        from waitress import serve
+        serve(app, host="0.0.0.0", port=port)
+    else:
+        # Local development
+        app.run(debug=True, port=port)
