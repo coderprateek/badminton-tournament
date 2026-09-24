@@ -152,6 +152,10 @@
     <form method="post" action="{{ url_for('reopen_match', match_id=match.id) }}">
       <button type="submit">Reopen match for editing</button>
     </form>
+  {% elif match.status == 'scheduled' %}
+    <form method="post" action="{{ url_for('start_match', match_id=match.id) }}">
+      <button type="submit">Start match</button>
+    </form>
   {% else %}
     <form method="post" action="{{ url_for('finish_match', match_id=match.id) }}">
       <button type="submit">Mark match finished</button>

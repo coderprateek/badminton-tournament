@@ -588,6 +588,20 @@ def reopen_match(match_id: str):
     return redirect(url_for("match_detail", match_id=match_id))
 
 
+@app.post("/matches/<match_id>/start")
+@admin_required
+def start_match(match_id: str):
+    data = storage.snapshot()
+    match = storage.find(data["matches"], match_id)
+    if not match:
+        abort(404)
+    match["status"] = "in_progress"
+    storage.replace_row(data["matches"], match)
+    storage.save_all(data)
+    flash("Match started.", "ok")
+    return redirect(url_for("match_detail", match_id=match_id))
+
+
 def _team_return(team: dict) -> str:
     if team.get("group_id"):
         return url_for("group_detail", group_id=team["group_id"])
