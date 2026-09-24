@@ -41,7 +41,10 @@
 <section class="group-grid">
   {% for card in cards %}
     <a class="card group-card" href="{{ url_for('group_detail', group_id=card.group.id) }}">
-      <h2>{{ card.group.name }}</h2>
+      <div class="card-header">
+        <h2>{{ card.group.name }}</h2>
+        <span class="arrow">→</span>
+      </div>
       <p>{{ card.teams|length }} team{{ 's' if card.teams|length != 1 else '' }} · {{ card.match_count }} match{{ 'es' if card.match_count != 1 else '' }}</p>
       {% if card.standings %}
         <table class="mini">

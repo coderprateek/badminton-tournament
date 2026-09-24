@@ -46,6 +46,8 @@ a { color: var(--accent-dark); }
 }
 .group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
 .group-card { display: block; text-decoration: none; color: inherit; }
+.card-header { display: flex; justify-content: space-between; align-items: center; }
+.arrow { color: var(--accent); font-size: 1.5rem; font-weight: 700; }
 .grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .narrow { max-width: 420px; }
 label, legend { display: block; font-size: 0.9rem; margin: 0.5rem 0; }
