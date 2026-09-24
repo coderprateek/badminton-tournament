@@ -156,7 +156,14 @@ function addPlayerRow(containerId) {
       {% if roster %}
         <ul class="plain">
           {% for player in roster %}
-            <li>{{ player.name }} · {{ gender_labels[player.gender] }}</li>
+            <li>
+              {{ player.name }} · {{ gender_labels[player.gender] }}
+              {% if is_admin %}
+                <form method="post" action="{{ url_for('delete_player', player_id=player.id) }}" style="display: inline;">
+                  <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete {{ player.name }}?')">Delete</button>
+                </form>
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
       {% else %}

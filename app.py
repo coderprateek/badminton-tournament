@@ -260,6 +260,33 @@ def add_players_bulk(team_id: str):
     return redirect(_team_return(team))
 
 
+@app.post("/players/<player_id>/delete")
+@admin_required
+def delete_player(player_id: str):
+    data = storage.snapshot()
+    player = storage.find(data["players"], player_id)
+    if not player:
+        abort(404)
+    
+    team = storage.find(data["teams"], player["team_id"])
+    if not team:
+        abort(404)
+    
+    # Remove player from all games
+    for game in data["games"]:
+        if player_id in game.get("team_a_player_ids", []):
+            game["team_a_player_ids"].remove(player_id)
+        if player_id in game.get("team_b_player_ids", []):
+            game["team_b_player_ids"].remove(player_id)
+    
+    # Remove player from data
+    data["players"] = [p for p in data["players"] if p["id"] != player_id]
+    
+    storage.save_all(data)
+    flash(f"{player['name']} deleted from {team['name']}.", "ok")
+    return redirect(_team_return(team))
+
+
 @app.post("/groups/<group_id>/round-robin")
 @admin_required
 def generate_round_robin(group_id: str):
