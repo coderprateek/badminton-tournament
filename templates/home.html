@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for row in card.standings[:3] %}
+            {% for row in card.standings %}
               <tr>
                 <td>{{ row.team.name }}</td>
                 <td>{{ row.points }}</td>
