@@ -368,6 +368,6 @@ def player_standings(group_id: str, teams: list[dict[str, Any]], matches: list[d
         return sorted(stats_dict.values(), key=lambda x: (-x["wins"], -(x["sets_for"] - x["sets_against"]), x["player"]["name"].lower()))
     
     return {
-        "male": sort_stats(male_stats)[:15],  # Limit to top 15
-        "female": sort_stats(female_stats)[:15]  # Limit to top 15
+        "male": sort_stats(male_stats),
+        "female": sort_stats(female_stats)
     }
