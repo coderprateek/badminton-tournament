@@ -237,6 +237,9 @@ def group_standings(
     for match in matches:
         if match["group_id"] != group_id:
             continue
+        # Skip final matches in standings
+        if match.get("is_final", False):
+            continue
         if match["team_a_id"] not in table or match["team_b_id"] not in table:
             continue
         games_a, games_b = match_game_tally(games, match["id"])
@@ -391,4 +394,22 @@ def player_standings(group_id: str, teams: list[dict[str, Any]], matches: list[d
     return {
         "male": sort_stats(male_stats),
         "female": sort_stats(female_stats)
+    }
+
+
+def get_final_winner(group_id: str, matches: list[dict[str, Any]], games: list[dict[str, Any]]) -> Optional[dict[str, Any]]:
+    """Get the winner of the final match for a group."""
+    final_match = next((m for m in matches if m.get("group_id") == group_id and m.get("is_final", False)), None)
+    if not final_match or final_match.get("status") != "finished":
+        return None
+    
+    winner_id = match_winner(games, final_match["id"])
+    if not winner_id:
+        return None
+    
+    winning_team_id = final_match["team_a_id"] if winner_id == "a" else final_match["team_b_id"]
+    return {
+        "match": final_match,
+        "winner_id": winning_team_id,
+        "winner_side": winner_id
     }

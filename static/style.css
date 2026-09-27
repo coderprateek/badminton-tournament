@@ -100,6 +100,9 @@ table.mini th, table.mini td { padding: 0.3rem 0.4rem; }
 .delete-btn:hover { background: #7a1616; }
 .save-all-btn { background: var(--accent); padding: 0.7rem 1.5rem; font-size: 1rem; margin: 1rem 0; width: 100%; }
 .save-all-btn:hover { background: var(--accent-dark); }
+.winner-banner { background: linear-gradient(135deg, var(--gold) 0%, #e8b823 100%); text-align: center; padding: 1.5rem; border: 2px solid var(--gold); }
+.winner-banner h2 { color: var(--ink); margin: 0 0 0.5rem 0; font-size: 1.2rem; }
+.winner-name { color: var(--ink); font-size: 2rem; font-weight: 700; margin: 0; }
 .bulk-player-row { margin-bottom: 0.5rem; }
 details { margin: 0.5rem 0; }
 details summary { cursor: pointer; color: var(--accent-dark); font-weight: 600; }

@@ -135,6 +135,12 @@ def group_detail(group_id: str):
         [t for t in data["teams"] if not t.get("group_id")],
         key=lambda t: t["name"].lower(),
     )
+    # Get final winner if exists
+    final_winner = storage.get_final_winner(group_id, data["matches"], data["games"])
+    if final_winner:
+        winning_team = storage.find(data["teams"], final_winner["winner_id"])
+        final_winner["winning_team"] = winning_team
+    
     return render_template(
         "group.html",
         group=group,
@@ -143,6 +149,7 @@ def group_detail(group_id: str):
         matches=match_views,
         regular_matches=regular_matches,
         final_match=final_match,
+        final_winner=final_winner,
         standings=storage.group_standings(group_id, data["teams"], data["matches"], data["games"]),
         player_standings=storage.player_standings(group_id, data["teams"], data["matches"], data["games"], data["players"]),
         unassigned=unassigned,

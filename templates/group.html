@@ -21,6 +21,13 @@ function addPlayerRow(containerId) {
 <p class="crumb"><a href="{{ url_for('home') }}">Groups</a> / {{ group.name }}</p>
 <h1>{{ group.name }}</h1>
 
+{% if final_winner %}
+<section class="card winner-banner">
+  <h2>🏆 Tournament Champion</h2>
+  <p class="winner-name">{{ final_winner.winning_team.name }}</p>
+</section>
+{% endif %}
+
 <section class="card">
   <h2>Standings</h2>
   {% if standings %}
