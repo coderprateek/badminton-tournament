@@ -10,7 +10,9 @@
   <p class="hint">{{ match.team_b.name }} lead on games won (higher set scores win each set; more sets win the game).</p>
 {% endif %}
 
-
+{% if is_admin %}
+<form method="post" action="{{ url_for('save_all_games', match_id=match.id) }}">
+{% endif %}
 
 {% for game in match.games %}
   <section class="card">
@@ -28,118 +30,102 @@
         {{ match.team_b.name }} lineup TBD
       {% endif %}
     </p>
-    {% if game.sets %}
-      <ol class="sets">
-        {% for set in game.sets %}
-          <li>Set {{ loop.index }}: {{ set.a }}–{{ set.b }}</li>
-        {% endfor %}
-      </ol>
-      {% if is_admin %}
-        <form class="row" method="post" action="{{ url_for('edit_set', game_id=game.id) }}">
-          <label>{{ match.team_a.name }}
-            <input type="number" name="score_a" value="{{ game.sets[0].a }}" min="0" required>
-          </label>
-          <label>{{ match.team_b.name }}
-            <input type="number" name="score_b" value="{{ game.sets[0].b }}" min="0" required>
-          </label>
-          <button type="submit">Edit score</button>
-        </form>
-      {% endif %}
-    {% else %}
-      <p class="hint">No sets recorded yet. The side with the higher score wins the set.</p>
-    {% endif %}
-
+    
     {% if is_admin %}
-      <form method="post" action="{{ url_for('set_lineup', game_id=game.id) }}">
-        <h3>Players</h3>
-        <div class="grid two">
-          <fieldset>
-            <legend>{{ match.team_a.name }} (pick {{ game.spec.players_per_side }})</legend>
-            {% if game.spec.players_per_side == 1 %}
-              <label>Player
-                <select name="team_a_player_ids" required>
-                  <option value="">Select player</option>
-                  {% for player in match.roster_a %}
-                    <option value="{{ player.id }}" {% if player.id in game.team_a_player_ids %}selected{% endif %}>
-                      {{ player.name }} ({{ gender_labels[player.gender] }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </label>
-            {% else %}
-              <label>Player 1
-                <select name="team_a_player_ids" required>
-                  <option value="">Select player</option>
-                  {% for player in match.roster_a %}
-                    <option value="{{ player.id }}" {% if game.team_a_player_ids|length > 0 and player.id == game.team_a_player_ids[0] %}selected{% endif %}>
-                      {{ player.name }} ({{ gender_labels[player.gender] }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </label>
-              <label>Player 2
-                <select name="team_a_player_ids" required>
-                  <option value="">Select player</option>
-                  {% for player in match.roster_a %}
-                    <option value="{{ player.id }}" {% if game.team_a_player_ids|length > 1 and player.id == game.team_a_player_ids[1] %}selected{% endif %}>
-                      {{ player.name }} ({{ gender_labels[player.gender] }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </label>
-            {% endif %}
-          </fieldset>
-          <fieldset>
-            <legend>{{ match.team_b.name }} (pick {{ game.spec.players_per_side }})</legend>
-            {% if game.spec.players_per_side == 1 %}
-              <label>Player
-                <select name="team_b_player_ids" required>
-                  <option value="">Select player</option>
-                  {% for player in match.roster_b %}
-                    <option value="{{ player.id }}" {% if player.id in game.team_b_player_ids %}selected{% endif %}>
-                      {{ player.name }} ({{ gender_labels[player.gender] }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </label>
-            {% else %}
-              <label>Player 1
-                <select name="team_b_player_ids" required>
-                  <option value="">Select player</option>
-                  {% for player in match.roster_b %}
-                    <option value="{{ player.id }}" {% if game.team_b_player_ids|length > 0 and player.id == game.team_b_player_ids[0] %}selected{% endif %}>
-                      {{ player.name }} ({{ gender_labels[player.gender] }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </label>
-              <label>Player 2
-                <select name="team_b_player_ids" required>
-                  <option value="">Select player</option>
-                  {% for player in match.roster_b %}
-                    <option value="{{ player.id }}" {% if game.team_b_player_ids|length > 1 and player.id == game.team_b_player_ids[1] %}selected{% endif %}>
-                      {{ player.name }} ({{ gender_labels[player.gender] }})
-                    </option>
-                  {% endfor %}
-                </select>
-              </label>
-            {% endif %}
-          </fieldset>
-        </div>
-        <button type="submit">Save lineup</button>
-      </form>
-      {% if not game.sets %}
-      <form class="row" method="post" action="{{ url_for('add_set', game_id=game.id) }}">
+      <h3>Players</h3>
+      <div class="grid two">
+        <fieldset>
+          <legend>{{ match.team_a.name }} (pick {{ game.spec.players_per_side }})</legend>
+          {% if game.spec.players_per_side == 1 %}
+            <label>Player
+              <select name="lineup_{{ game.id }}_team_a" required>
+                <option value="">Select player</option>
+                {% for player in match.roster_a %}
+                  <option value="{{ player.id }}" {% if player.id in game.team_a_player_ids %}selected{% endif %}>
+                    {{ player.name }} ({{ gender_labels[player.gender] }})
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+          {% else %}
+            <label>Player 1
+              <select name="lineup_{{ game.id }}_team_a" required>
+                <option value="">Select player</option>
+                {% for player in match.roster_a %}
+                  <option value="{{ player.id }}" {% if game.team_a_player_ids|length > 0 and player.id == game.team_a_player_ids[0] %}selected{% endif %}>
+                    {{ player.name }} ({{ gender_labels[player.gender] }})
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Player 2
+              <select name="lineup_{{ game.id }}_team_a" required>
+                <option value="">Select player</option>
+                {% for player in match.roster_a %}
+                  <option value="{{ player.id }}" {% if game.team_a_player_ids|length > 1 and player.id == game.team_a_player_ids[1] %}selected{% endif %}>
+                    {{ player.name }} ({{ gender_labels[player.gender] }})
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+          {% endif %}
+        </fieldset>
+        <fieldset>
+          <legend>{{ match.team_b.name }} (pick {{ game.spec.players_per_side }})</legend>
+          {% if game.spec.players_per_side == 1 %}
+            <label>Player
+              <select name="lineup_{{ game.id }}_team_b" required>
+                <option value="">Select player</option>
+                {% for player in match.roster_b %}
+                  <option value="{{ player.id }}" {% if player.id in game.team_b_player_ids %}selected{% endif %}>
+                    {{ player.name }} ({{ gender_labels[player.gender] }})
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+          {% else %}
+            <label>Player 1
+              <select name="lineup_{{ game.id }}_team_b" required>
+                <option value="">Select player</option>
+                {% for player in match.roster_b %}
+                  <option value="{{ player.id }}" {% if game.team_b_player_ids|length > 0 and player.id == game.team_b_player_ids[0] %}selected{% endif %}>
+                    {{ player.name }} ({{ gender_labels[player.gender] }})
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>Player 2
+              <select name="lineup_{{ game.id }}_team_b" required>
+                <option value="">Select player</option>
+                {% for player in match.roster_b %}
+                  <option value="{{ player.id }}" {% if game.team_b_player_ids|length > 1 and player.id == game.team_b_player_ids[1] %}selected{% endif %}>
+                    {{ player.name }} ({{ gender_labels[player.gender] }})
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+          {% endif %}
+        </fieldset>
+      </div>
+      
+      <h3>Score</h3>
+      <div class="row">
         <label>{{ match.team_a.name }}
-          <input type="number" name="score_a" min="0" required>
+          <input type="number" name="score_{{ game.id }}_a" value="{% if game.sets %}{{ game.sets[0].a }}{% endif %}" min="0">
         </label>
         <label>{{ match.team_b.name }}
-          <input type="number" name="score_b" min="0" required>
+          <input type="number" name="score_{{ game.id }}_b" value="{% if game.sets %}{{ game.sets[0].b }}{% endif %}" min="0">
         </label>
-        <button type="submit">Add set score</button>
-      </form>
+      </div>
+    {% else %}
+      {% if game.sets %}
+        <ol class="sets">
+          {% for set in game.sets %}
+            <li>Set {{ loop.index }}: {{ set.a }}–{{ set.b }}</li>
+          {% endfor %}
+        </ol>
       {% else %}
-      <p class="hint">Set score recorded: {{ game.sets[0].a }}–{{ game.sets[0].b }}</p>
+        <p class="hint">No sets recorded yet.</p>
       {% endif %}
     {% endif %}
   </section>
@@ -148,6 +134,9 @@
 {% endfor %}
 
 {% if is_admin %}
+  <button type="submit" class="save-all-btn">Save all lineups and scores</button>
+</form>
+
   {% if match.status == 'finished' %}
     <form method="post" action="{{ url_for('reopen_match', match_id=match.id) }}">
       <button type="submit">Reopen match for editing</button>

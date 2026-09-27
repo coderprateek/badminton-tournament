@@ -556,6 +556,80 @@ def edit_set(game_id: str):
     return redirect(url_for("match_detail", match_id=game["match_id"]))
 
 
+@app.post("/matches/<match_id>/save-all")
+@admin_required
+def save_all_games(match_id: str):
+    data = storage.snapshot()
+    match = storage.find(data["matches"], match_id)
+    if not match:
+        abort(404)
+    
+    # Get all games for this match
+    match_games = [g for g in data["games"] if g["match_id"] == match_id]
+    
+    # Update each game's lineup and score
+    for game in match_games:
+        # Get lineup data
+        team_a_ids = request.form.getlist(f"lineup_{game['id']}_team_a")
+        team_b_ids = request.form.getlist(f"lineup_{game['id']}_team_b")
+        
+        # Filter out empty values
+        team_a_ids = [pid for pid in team_a_ids if pid and pid.strip()]
+        team_b_ids = [pid for pid in team_b_ids if pid and pid.strip()]
+        
+        # Validate lineup
+        players_a = [storage.find(data["players"], pid) for pid in team_a_ids]
+        players_b = [storage.find(data["players"], pid) for pid in team_b_ids]
+        
+        error = storage.validate_lineup(game["category"], players_a)
+        if error:
+            flash(f"Error in {game['label']} lineup (Team A): {error}", "error")
+            return redirect(url_for("match_detail", match_id=match_id))
+        
+        error = storage.validate_lineup(game["category"], players_b)
+        if error:
+            flash(f"Error in {game['label']} lineup (Team B): {error}", "error")
+            return redirect(url_for("match_detail", match_id=match_id))
+        
+        # Update lineup
+        game["team_a_player_ids"] = team_a_ids
+        game["team_b_player_ids"] = team_b_ids
+        
+        # Get score data
+        score_a = request.form.get(f"score_{game['id']}_a", "").strip()
+        score_b = request.form.get(f"score_{game['id']}_b", "").strip()
+        
+        # Update score if provided
+        if score_a and score_b:
+            try:
+                score_a = int(score_a)
+                score_b = int(score_b)
+            except ValueError:
+                flash(f"Invalid score for {game['label']}. Scores must be whole numbers.", "error")
+                return redirect(url_for("match_detail", match_id=match_id))
+            
+            if score_a < 0 or score_b < 0:
+                flash(f"Invalid score for {game['label']}. Scores cannot be negative.", "error")
+                return redirect(url_for("match_detail", match_id=match_id))
+            
+            if score_a == score_b:
+                flash(f"Invalid score for {game['label']}. A set cannot be a draw.", "error")
+                return redirect(url_for("match_detail", match_id=match_id))
+            
+            game["sets"] = [{"a": score_a, "b": score_b}]
+        
+        storage.replace_row(data["games"], game)
+    
+    # Update match status if scores were recorded
+    if match["status"] == "scheduled":
+        match["status"] = "in_progress"
+        storage.replace_row(data["matches"], match)
+    
+    storage.save_all(data)
+    flash("All lineups and scores saved successfully.", "ok")
+    return redirect(url_for("match_detail", match_id=match_id))
+
+
 @app.post("/matches/<match_id>/finish")
 @admin_required
 def finish_match(match_id: str):

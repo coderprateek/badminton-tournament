@@ -98,6 +98,8 @@ table.mini th, table.mini td { padding: 0.3rem 0.4rem; }
 .remove-row:hover { background: #7a1616; }
 .delete-btn { background: var(--err); padding: 0.2rem 0.5rem; font-size: 0.75rem; margin-left: 0.5rem; }
 .delete-btn:hover { background: #7a1616; }
+.save-all-btn { background: var(--accent); padding: 0.7rem 1.5rem; font-size: 1rem; margin: 1rem 0; width: 100%; }
+.save-all-btn:hover { background: var(--accent-dark); }
 .bulk-player-row { margin-bottom: 0.5rem; }
 details { margin: 0.5rem 0; }
 details summary { cursor: pointer; color: var(--accent-dark); font-weight: 600; }
