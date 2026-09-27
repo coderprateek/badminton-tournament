@@ -103,6 +103,8 @@ table.mini th, table.mini td { padding: 0.3rem 0.4rem; }
 .winner-banner { background: linear-gradient(135deg, var(--gold) 0%, #e8b823 100%); text-align: center; padding: 1.5rem; border: 2px solid var(--gold); }
 .winner-banner h2 { color: var(--ink); margin: 0 0 0.5rem 0; font-size: 1.2rem; }
 .winner-name { color: var(--ink); font-size: 2rem; font-weight: 700; margin: 0; }
+table.mini td a { text-decoration: none; color: inherit; font-weight: 600; }
+table.mini td a:hover { text-decoration: underline; color: var(--accent-dark); }
 .bulk-player-row { margin-bottom: 0.5rem; }
 details { margin: 0.5rem 0; }
 details summary { cursor: pointer; color: var(--accent-dark); font-weight: 600; }

@@ -655,6 +655,54 @@ def finish_match(match_id: str):
     return redirect(url_for("match_detail", match_id=match_id))
 
 
+@app.get("/players/<player_id>")
+def player_detail(player_id: str):
+    data = storage.snapshot()
+    player = storage.find(data["players"], player_id)
+    if not player:
+        abort(404)
+    
+    team = storage.find(data["teams"], player["team_id"])
+    if not team:
+        abort(404)
+    
+    group = storage.find(data["groups"], team.get("group_id", ""))
+    
+    # Get all games this player participated in
+    player_games = []
+    for game in data["games"]:
+        if player_id in game.get("team_a_player_ids", []) or player_id in game.get("team_b_player_ids", []):
+            match = storage.find(data["matches"], game["match_id"])
+            if match:
+                game_winner = storage.game_winner(game)
+                player_side = "a" if player_id in game.get("team_a_player_ids", []) else "b"
+                player_won = (game_winner == player_side)
+                
+                player_games.append({
+                    "game": game,
+                    "match": match,
+                    "team_a": storage.find(data["teams"], match["team_a_id"]),
+                    "team_b": storage.find(data["teams"], match["team_b_id"]),
+                    "team_a_players": [storage.find(data["players"], pid) for pid in game.get("team_a_player_ids", [])],
+                    "team_b_players": [storage.find(data["players"], pid) for pid in game.get("team_b_player_ids", [])],
+                    "player_side": player_side,
+                    "player_won": player_won,
+                })
+    
+    # Sort by match order
+    player_games.sort(key=lambda x: x["match"].get("order", 0))
+    
+    return render_template(
+        "player.html",
+        player=player,
+        team=team,
+        group=group,
+        games=player_games,
+        categories=storage.CATEGORIES,
+        gender_labels=storage.GENDER_LABELS,
+    )
+
+
 @app.post("/matches/<match_id>/reopen")
 @admin_required
 def reopen_match(match_id: str):

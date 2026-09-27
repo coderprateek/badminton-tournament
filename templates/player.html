@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ player.name }}{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{{ url_for('home') }}">Groups</a> / <a href="{{ url_for('group_detail', group_id=group.id) }}">{{ group.name }}</a> / {{ player.name }}</p>
+<h1>{{ player.name }}</h1>
+<p class="hint">{{ team.name }} · {{ gender_labels[player.gender] }}</p>
+
+<section class="card">
+  <h2>Match History</h2>
+  {% if games %}
+    <table>
+      <thead>
+        <tr>
+          <th>Match</th>
+          <th>Game</th>
+          <th>Category</th>
+          <th>Lineup</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in games %}
+          <tr>
+            <td><a href="{{ url_for('match_detail', match_id=item.match.id) }}">{{ item.team_a.name }} vs {{ item.team_b.name }}</a></td>
+            <td>Game {{ item.game.order }}</td>
+            <td>{{ categories[item.game.category].label }}</td>
+            <td>
+              {% if item.player_side == 'a' %}
+                {% for p in item.team_a_players %}
+                  {{ p.name }}{% if not loop.last %} / {% endif %}
+                {% endfor %}
+                <strong>vs</strong>
+                {% for p in item.team_b_players %}
+                  {{ p.name }}{% if not loop.last %} / {% endif %}
+                {% endfor %}
+              {% else %}
+                {% for p in item.team_b_players %}
+                  {{ p.name }}{% if not loop.last %} / {% endif %}
+                {% endfor %}
+                <strong>vs</strong>
+                {% for p in item.team_a_players %}
+                  {{ p.name }}{% if not loop.last %} / {% endif %}
+                {% endfor %}
+              {% endif %}
+            </td>
+            <td>
+              {% if item.game.sets %}
+                {% if item.player_side == 'a' %}
+                  {{ item.game.sets[0].a }}–{{ item.game.sets[0].b }}
+                {% else %}
+                  {{ item.game.sets[0].b }}–{{ item.game.sets[0].a }}
+                {% endif %}
+                {% if item.player_won %}
+                  <span class="status" style="color: var(--ok);"> (Won)</span>
+                {% else %}
+                  <span class="status" style="color: var(--err);"> (Lost)</span>
+                {% endif %}
+              {% else %}
+                Not played
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="hint">No matches played yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

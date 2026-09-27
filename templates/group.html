@@ -85,7 +85,7 @@ function addPlayerRow(containerId) {
             <tbody>
               {% for stat in player_standings.male %}
                 <tr>
-                  <td>{{ stat.player.name }}</td>
+                  <td><a href="{{ url_for('player_detail', player_id=stat.player.id) }}">{{ stat.player.name }}</a></td>
                   <td>{{ stat.team.name }}</td>
                   <td>{{ stat.played }}</td>
                   <td>{{ stat.wins }}</td>
@@ -118,7 +118,7 @@ function addPlayerRow(containerId) {
             <tbody>
               {% for stat in player_standings.female %}
                 <tr>
-                  <td>{{ stat.player.name }}</td>
+                  <td><a href="{{ url_for('player_detail', player_id=stat.player.id) }}">{{ stat.player.name }}</a></td>
                   <td>{{ stat.team.name }}</td>
                   <td>{{ stat.played }}</td>
                   <td>{{ stat.wins }}</td>
